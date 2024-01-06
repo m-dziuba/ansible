@@ -28,9 +28,8 @@ pacman -Sy
 pacman -S efibootmgr grub  --noconfirm
 mkdir /boot/EFI
 fdisk -l
-read -p "EFI partition: " EFIPART
 mkdir -p /boot/EFI
-mount $EFIPART /boot/EFI
+mount $EFI_PART /boot/EFI
 grub-install --bootloader-id=GRUB --recheck
 cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
 CPU_MANU=$(lscpu | awk '/Vendor ID:/ { if ($3 == "GenuineIntel") print "intel"; else if ($3 == "AuthenticAMD") print "amd"; else print "CPU manufacturer unknown" }')
@@ -56,9 +55,10 @@ echo "### Setup for root ###"
 passwd
 
 # Set hostname
+rm /etc/hostname
 touch /etc/hostname
 echo "$USER-arch" | tee -a /etc/hostname
 echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
 
-pacman -S sudo git --noconfirm
+pacman -S sudo git networkmanager --noconfirm
 git clone https://github.com/m-dziuba/ansible /home/${USER}/ansible
