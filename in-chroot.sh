@@ -31,7 +31,7 @@ locale-gen
 
 # Setup GRUB
 pacman -Sy
-pacman -S efibootmgr grub  --noconfirm
+pacman -S efibootmgr grub linux-headers linux-lts-headers --noconfirm
 mkdir /boot/EFI
 fdisk -l
 mkdir -p /boot/EFI
