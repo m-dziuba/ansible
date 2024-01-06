@@ -1,6 +1,5 @@
 loadkeys pl
 timedatectl set-ntp true
-passwd
 pacman -Sy
 
 fdisk -l
@@ -10,6 +9,8 @@ read -p "EFI partition size: " EFI_SIZE
 read -p "root partition size: " ROOT_SIZE
 read -p "User: " USER
 read -sp "Password: " PASSWORD
+
+echo "root:${PASSWORD}" | chpasswd
 
 sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
     g # create new partition table
