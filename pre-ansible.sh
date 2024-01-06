@@ -6,6 +6,7 @@ pacman -Sy
 
 fdisk -l
 read -p "Disk to partition: " TGTDEV
+read -p "Partition suffix: " PART_SUFFIX
 sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
     g # create new partition table
     n # new partition
@@ -32,9 +33,9 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
     w # write the partition table
 EOF
 
-mkfs.fat -F 32 ${TGTDEV}1
-mkfs.ext4 ${TGTDEV}2
-mkfs.ext4 ${TGTDEV}3
+mkfs.fat -F 32 ${TGTDEV}${PART_SUFFIX}1
+mkfs.ext4 ${TGTDEV}${PART_SUFFIX}2
+mkfs.ext4 ${TGTDEV}${PART_SUFFIX}3
 mount ${TGTDEV}2 /mnt
 mkdir /mnt/home
 mount ${TGTDEV}2 /mnt/home
