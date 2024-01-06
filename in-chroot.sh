@@ -67,3 +67,4 @@ echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
 pacman -S sudo git networkmanager --noconfirm
 git clone https://github.com/m-dziuba/ansible /home/${USER}/ansible
 chown -R "${USER}:${USER}" "/home/${USER}/ansible"
+exit
