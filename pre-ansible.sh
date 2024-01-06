@@ -8,6 +8,8 @@ read -p "Disk to partition: " TGTDEV
 read -p "Partition suffix: " PART_SUFFIX
 read -p "EFI partition size: " EFI_SIZE
 read -p "root partition size: " ROOT_SIZE
+read -p "User: " USER
+read -sp "Password: " PASSWORD
 
 sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
     g # create new partition table
@@ -45,5 +47,5 @@ pacstrap -K /mnt base linux linux-firmware --noconfirm
 genfstab -U /mnt >> /mnt/etc/fstab
 
 # Change root into the new system
-arch-chroot /mnt  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/m-dziuba/ansible/master/in-chroot.sh)" -e ${TGTDEV}${PART_SUFFIX}1
+arch-chroot /mnt  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/m-dziuba/ansible/master/in-chroot.sh)" -e ${TGTDEV}${PART_SUFFIX}1 -u ${USER} -p ${PASSWORD}
 arch-chroot /mnt

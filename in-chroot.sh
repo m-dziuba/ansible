@@ -1,8 +1,14 @@
 # get opts
-while getopts ":e:" opt; do
+while getopts ":e:p:u:" opt; do
     case $opt in
         e)
             EFI_PART="$OPTARG"
+            ;;
+        p)
+            PASSWORD="$OPTARG"
+            ;;
+        u)
+            USER="$OPTARG"
             ;;
         \?)
             echo "Invalid option: -$OPTARG" >&2
@@ -32,7 +38,7 @@ mkdir -p /boot/EFI
 mount $EFI_PART /boot/EFI
 grub-install --bootloader-id=GRUB --recheck
 cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
-CPU_MANU=$(lscpu | awk '/Vendor ID:/ { if ($3 == "GenuineIntel") print "intel"; else if ($3 == "AuthenticAMD") print "amd"; else print "CPU manufacturer unknown" }')
+CPU_MANU=$(lscpu | awk '/Vendor ID:/ { if ($3 == "GenuineIntel ID") print "intel"; else if ($3 == "AuthenticAMD") print "amd"; else print "CPU manufacturer unknown" }')
 pacman -S ${CPU_MANU}-ucode --noconfirm
 grub-mkconfig -o /boot/grub/grub.cfg
 
@@ -44,15 +50,13 @@ mkswap /swapfile
 echo "/swapfile none swap sw 0 0" | tee -a /etc/fstab
 
 # Set username and password
-echo "### Setup for $USER ###"
-read -p "Username: " USER
-useradd -m $USER
+useradd -m -s /bin/bash $USER
+chown -R "${USER}:${USER}" "/home/${USER}"
+chmod 700 "home/{$USER}"
 usermod -aG wheel $USER
-passwd $USER
 
-# Set root password
-echo "### Setup for root ###"
-passwd
+echo "${USER}:${PASSWORD}" | chpasswd
+echo "root:${PASSWORD}" | chpasswd
 
 # Set hostname
 rm /etc/hostname
@@ -62,3 +66,4 @@ echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
 
 pacman -S sudo git networkmanager --noconfirm
 git clone https://github.com/m-dziuba/ansible /home/${USER}/ansible
+chown -R "${USER}:${USER}" "/home/${USER}/ansible"
