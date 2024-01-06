@@ -1,33 +1,46 @@
 # Set locale
 ln -sf /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
 hwclock --systohc
-rm /etc/locale.gen
-touch /etc/locale.gen
-echo "en_US.UTF-8 UTF-8" | tee -a /etc/locale.gen
-echo "pl_PL.UTF-8 UTF-8" | tee -a /etc/locale.gen
-# Set username and password
-read -p "Username: " USER
-read -sp "User password: " USERPWD
-useradd -m $USER
-usermod -aG wheel $USER
-echo $USER:$USERPWD | chpasswd 
-USERPWD=""
-# Set hostname
-touch /etc/hostname
-echo "$USER-Arch" | tee -a /etc/hostname
-# Set password
-read -sp "Root password: " ROOTPWD
-echo root:$ROOTPWD | chpasswd 
-ROOTPWD=""
-echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
+sed "s/#en_US.UTF-8/en_US.UTF-8/g" /etc/locale.gen
+sed "s/#en_US.UTF-8/en_US.UTF-8/g" /etc/locale.gen
+locale-gen
 
+# Setup GRUB
 pacman -Sy
-
+pacman -S efibootmgr grub 
+mkdir /boot/EFI
 fdisk -l
 read -p "EFI partition: " EFIPART
-mount $EFIPART /efi
-pacman -S efibootmgr grub amd-ucode
+mkdir /boot/EFI
+mount $EFIPART /boot/EFI
+grub-install --target=x86_56-efi --efi-directory=/boot/EFI --bootloader-id=GRUB --recheck
+cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
+read -p "CPU amd or intel: " CPU_MANU
+pacman -S ${CPU_MANU}-ucode
 grub-mkconfig -o /boot/grub/grub.cfg
-grub-install --target=x86_56-efi --efi-directory=/efi --bootloader-id=GRUB
 
-pacman -S sudo git curl ansible
+# Setup swapfile
+
+fallocate -l 2G /swapfile
+chmod 600 /swapfile
+mkswap /swapfile
+echo "/swapfile none swap sw 0 0" | tee -a /etc/fstab
+
+# Set username and password
+# read -p "Username: " USER
+# read -sp "User password: " USERPWD
+# useradd -m $USER
+# usermod -aG wheel $USER
+# echo $USER:$USERPWD | chpasswd 
+# USERPWD=""
+# # Set hostname
+# touch /etc/hostname
+# echo "$USER-Arch" | tee -a /etc/hostname
+# # Set password
+# read -sp "Root password: " ROOTPWD
+# echo root:$ROOTPWD | chpasswd 
+# ROOTPWD=""
+# echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
+# 
+# 
+# pacman -S sudo git curl ansible
