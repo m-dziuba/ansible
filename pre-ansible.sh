@@ -8,7 +8,7 @@ read -p "Partition suffix: " PART_SUFFIX
 read -p "EFI partition size: " EFI_SIZE
 read -p "root partition size: " ROOT_SIZE
 read -p "User: " USER
-read -sp "Password: " PASSWORD
+read -p "Password: " PASSWORD
 
 echo "root:${PASSWORD}" | chpasswd
 

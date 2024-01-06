@@ -35,8 +35,6 @@ pacman -S efibootmgr grub linux-headers linux-lts-headers --noconfirm
 mkdir /boot/EFI
 fdisk -l
 mkdir -p /boot/EFI
-echo $EFI_PART $PASSWORD $USER
-sleep 10
 mount $EFI_PART /boot/EFI
 grub-install --bootloader-id=GRUB --recheck
 cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
