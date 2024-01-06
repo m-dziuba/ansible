@@ -1,0 +1,10 @@
+- name: WELCOME TO THE RICEFIELDS MFS
+  tags:
+    - install
+    - rice
+  block:
+    - name: Setup rice software
+      community.general.pacman:
+        name: ["awesome", "rofi", "picom", "nitrogen", "nautilus"]
+
+

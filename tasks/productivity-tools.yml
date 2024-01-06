@@ -1,0 +1,14 @@
+- name: Setup productivity tools
+  community.general.pacman:
+    name: 
+      - neovim
+      - tmux
+      - fzf
+      - gimp
+      - xclip
+      - tldr
+      - shutter
+      - ripgrep
+  tags:
+    - install
+    - productivity

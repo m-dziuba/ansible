@@ -1,0 +1,8 @@
+- name: Setup rice firefox, spotify, obsidian, syncthing
+  community.general.pacman:
+    name: ["firefox", "spotify-launcher", "obsidian", "syncthing"]
+  tags:
+    - install
+    - rice
+
+

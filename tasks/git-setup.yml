@@ -1,0 +1,15 @@
+- name: Setup git settings
+  become_user: "{{ lookup('env', 'USER') }}"
+  tags:
+    - git_config
+  block:
+  - name: Git email setup
+    git_config:
+      name: user.email
+      scope: global
+      value: mateusz.dziuba97@gmail.command 
+  - name: Git name setup
+    git_config:
+      name: user.name
+      scope: global
+      value: Mateusz Dziuba 

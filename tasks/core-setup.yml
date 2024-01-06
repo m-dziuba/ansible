@@ -1,0 +1,22 @@
+- name: Setup core packages
+  community.general.pacman:
+    name: ["curl", "htop", "go", "ccache", "lsof", "python-pip", "python", "pavucontrol", "nvidia", "nvidia-settings", "docker"]
+  tags:
+    - install
+    - core 
+- name: Setup core packages needed for neovim
+  tags:
+    - install
+    - core 
+    - neovim
+  block:
+    - name: Build packages
+      community.general.pacman:
+        name: ["base-devel", "cmake"]
+    - name: Install lua, unzip, gettext
+      community.general.pacman:
+        name: ["lua", "unzip", "gettext"]
+    - name: Install clang
+      community.general.pacman:
+        name: ["clang"]
+

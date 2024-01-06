@@ -1,0 +1,22 @@
+- name: Stowing dotfiles
+  tags:
+    - install
+    - dotfiles
+    - stow
+  block:
+    - name: Installing stow
+      community.general.pacman:
+        name: stow
+    - name: Cloning .dotfiles
+      become_user: "{{ lookup('env', 'USER') }}"
+      ansible.builtin.git:
+        repo: git@github.com:m-dziuba/.dotfiles.git
+        dest: "{{ lookup('env', 'HOME') }}/.dotfiles"
+        recursive: yes
+        update: yes
+        accept_hostkey: true
+        version: master
+    - name: Stow dotfiles
+      become_user: "{{ lookup('env', 'USER') }}"
+      shell: cd $HOME/.dotfiles && ./arch
+
