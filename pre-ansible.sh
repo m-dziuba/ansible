@@ -36,9 +36,9 @@ EOF
 mkfs.fat -F 32 ${TGTDEV}${PART_SUFFIX}1
 mkfs.ext4 ${TGTDEV}${PART_SUFFIX}2
 mkfs.ext4 ${TGTDEV}${PART_SUFFIX}3
-mount ${TGTDEV}2 /mnt
+mount ${TGTDEV}${PART_SUFFIX}2 /mnt
 mkdir /mnt/home
-mount ${TGTDEV}2 /mnt/home
+mount ${TGTDEV}${PART_SUFFIX}2 /mnt/home
 pacstrap -K /mnt base linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 
