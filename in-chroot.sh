@@ -19,9 +19,15 @@ echo "$USER-Arch" | tee -a /etc/hostname
 read -sp "Root password: " ROOTPWD
 echo root:$ROOTPWD | chpasswd 
 ROOTPWD=""
+echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
 
 pacman -Sy
+
+fdisk -l
+read -p "EFI partition: " EFIPART
+mount $EFIPART /efi
+pacman -S efibootmgr grub amd-ucode
+grub-mkconfig -o /boot/grub/grub.cfg
+grub-install --target=x86_56-efi --efi-directory=/efi --bootloader-id=GRUB
+
 pacman -S sudo git curl ansible
-echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
-# su $USER
-cd ~/
