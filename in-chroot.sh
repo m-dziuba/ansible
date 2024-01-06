@@ -1,26 +1,8 @@
 # get opts
-while getopts ":e:p:u:" opt; do
-    case $opt in
-        e)
-            EFI_PART="$OPTARG"
-            ;;
-        p)
-            PASSWORD="$OPTARG"
-            ;;
-        u)
-            USER="$OPTARG"
-            ;;
-        \?)
-            echo "Invalid option: -$OPTARG" >&2
-            exit 1
-            ;;
-        :)
-            echo "Option -$OPTARG requires an argument." >&2
-            exit 1
-            ;;
-    esac
-done
-
+fdisk -l
+read -p "EFI partition: " EFI_PART
+read -p "Username: "
+read -sp "Password: "
 
 # Set locale
 ln -sf /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
@@ -34,7 +16,7 @@ pacman -Sy
 pacman -S efibootmgr grub linux-headers linux-lts-headers --noconfirm
 mkdir -p /boot/EFI
 mount $EFI_PART /boot/EFI
-grub-install --target=86_64-efi --bootloader-id=GRUB --recheck
+grub-install --target=x86_64-efi --bootloader-id=GRUB --recheck
 cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
 CPU_MANU=$(lscpu | awk '/Vendor ID:/ { if ($3 == "GenuineIntel ID") print "intel"; else if ($3 == "AuthenticAMD") print "amd"; else print "CPU manufacturer unknown" }')
 pacman -S ${CPU_MANU}-ucode --noconfirm
