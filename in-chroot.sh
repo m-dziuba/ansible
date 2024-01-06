@@ -1,8 +1,26 @@
 # get opts
-fdisk -l
-read -p "EFI partition: " EFI_PART
-read -p "Username: "
-read -sp "Password: "
+while getopts ":e:p:u:" opt; do
+    case $opt in
+        e)
+            EFI_PART="$OPTARG"
+            ;;
+        p)
+            PASSWORD="$OPTARG"
+            ;;
+        u)
+            USER="$OPTARG"
+            ;;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            exit 1
+            ;;
+        :)
+            echo "Option -$OPTARG requires an argument." >&2
+            exit 1
+            ;;
+    esac
+done
+
 
 # Set locale
 ln -sf /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
