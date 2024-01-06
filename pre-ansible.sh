@@ -36,14 +36,14 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
 EOF
 
 mkfs.fat -F 32 ${TGTDEV}${PART_SUFFIX}1
-mkfs.ext4 ${TGTDEV}${PART_SUFFIX}2
-mkfs.ext4 ${TGTDEV}${PART_SUFFIX}3
+mkfs.ext4 -F ${TGTDEV}${PART_SUFFIX}2
+mkfs.ext4 -F ${TGTDEV}${PART_SUFFIX}3
 mount ${TGTDEV}${PART_SUFFIX}2 /mnt
 mkdir /mnt/home
 mount ${TGTDEV}${PART_SUFFIX}2 /mnt/home
-pacstrap -K /mnt base linux linux-firmware
+pacstrap -K /mnt base linux linux-firmware --noconfirm
 genfstab -U /mnt >> /mnt/etc/fstab
 
 # Change root into the new system
-arch-chroot /mnt  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/m-dziuba/ansible/master/in-chroot.sh)"
+arch-chroot /mnt  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/m-dziuba/ansible/master/in-chroot.sh)" --eft_part ${TGTDEV}${PART_SUFFIX}1
 arch-chroot /mnt

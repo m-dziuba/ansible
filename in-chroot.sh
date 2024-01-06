@@ -1,3 +1,21 @@
+# Get opts
+while getoprs ":e:"; do
+    case $opt in 
+            e) EFI_PART="$OPTARG"
+            ;;
+        \?) echo "Invalid option -$OPTARG" >&w
+        exit 1
+        ;;
+        esac
+    in 
+        e) EFI_PART="$OPTARG"
+        ;;
+    \?) echo "Invalid option -$OPTARG" >&w
+    exit 1
+    ;;
+    esac
+
+
 # Set locale
 ln -sf /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
 hwclock --systohc
@@ -7,16 +25,16 @@ locale-gen
 
 # Setup GRUB
 pacman -Sy
-pacman -S efibootmgr grub 
+pacman -S efibootmgr grub  --noconfirm
 mkdir /boot/EFI
 fdisk -l
 read -p "EFI partition: " EFIPART
-mkdir /boot/EFI
+mkdir -p /boot/EFI
 mount $EFIPART /boot/EFI
-grub-install --target=x86_56-efi --bootloader-id=GRUB --recheck
+grub-install --bootloader-id=GRUB --recheck
 cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
-read -p "CPU amd or intel: " CPU_MANU
-pacman -S ${CPU_MANU}-ucode
+CPU_MANU=$(lscpu | awk '/Vendor ID:/ { if ($3 == "GenuineIntel") print "intel"; else if ($3 == "AuthenticAMD") print "amd"; else print "CPU manufacturer unknown" }')
+pacman -S ${CPU_MANU}-ucode --noconfirm
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Setup swapfile
@@ -39,8 +57,8 @@ passwd
 
 # Set hostname
 touch /etc/hostname
-echo "$USER-Arch" | tee -a /etc/hostname
+echo "$USER-arch" | tee -a /etc/hostname
 echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
 
-
-pacman -S sudo git curl ansible
+pacman -S sudo git --noconfirm
+git clone https://github.com/m-dziuba/ansible /home/${USER}/ansible
