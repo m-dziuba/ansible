@@ -13,7 +13,7 @@ fdisk -l
 read -p "EFI partition: " EFIPART
 mkdir /boot/EFI
 mount $EFIPART /boot/EFI
-grub-install --target=x86_56-efi --efi-directory=/boot/EFI --bootloader-id=GRUB --recheck
+grub-install --target=x86_56-efi --bootloader-id=GRUB --recheck
 cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
 read -p "CPU amd or intel: " CPU_MANU
 pacman -S ${CPU_MANU}-ucode
@@ -27,20 +27,20 @@ mkswap /swapfile
 echo "/swapfile none swap sw 0 0" | tee -a /etc/fstab
 
 # Set username and password
-# read -p "Username: " USER
-# read -sp "User password: " USERPWD
-# useradd -m $USER
-# usermod -aG wheel $USER
-# echo $USER:$USERPWD | chpasswd 
-# USERPWD=""
-# # Set hostname
-# touch /etc/hostname
-# echo "$USER-Arch" | tee -a /etc/hostname
-# # Set password
-# read -sp "Root password: " ROOTPWD
-# echo root:$ROOTPWD | chpasswd 
-# ROOTPWD=""
-# echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
-# 
-# 
-# pacman -S sudo git curl ansible
+read -p "Username: " USER
+useradd -m $USER
+usermod -aG wheel $USER
+echo "### Setup for $USER ###"
+passwd $USER
+
+# Set root password
+echo "### Setup for $USER ###"
+passwd
+
+# Set hostname
+touch /etc/hostname
+echo "$USER-Arch" | tee -a /etc/hostname
+echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
+
+
+pacman -S sudo git curl ansible

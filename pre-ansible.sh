@@ -1,7 +1,6 @@
 loadkeys pl
 timedatectl set-ntp true
-read -sp "Root password: " ROOTPWD
-echo "root:${ROOTPWD}" | chpasswd
+passwd
 pacman -Sy
 
 fdisk -l
@@ -43,4 +42,4 @@ pacstrap -K /mnt base linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 
 # Change root into the new system
-arch-chroot /mnt /bin/bash
+arch-chroot /mnt 
