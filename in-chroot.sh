@@ -1,8 +1,8 @@
 # Set locale
 ln -sf /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
 hwclock --systohc
-sed "s/#en_US.UTF-8/en_US.UTF-8/g" /etc/locale.gen
-sed "s/#en_US.UTF-8/en_US.UTF-8/g" /etc/locale.gen
+sed -i "s/#en_US.UTF-8/en_US.UTF-8/g" /etc/locale.gen
+sed -i "s/#pl_PL.UTF-8/en_US.UTF-8/g" /etc/locale.gen
 locale-gen
 
 # Setup GRUB
