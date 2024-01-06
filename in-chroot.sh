@@ -1,19 +1,19 @@
-# Get opts
-while getoprs ":e:"; do
-    case $opt in 
-            e) EFI_PART="$OPTARG"
+# get opts
+while getopts ":e:" opt; do
+    case $opt in
+        e)
+            EFI_PART="$OPTARG"
             ;;
-        \?) echo "Invalid option -$OPTARG" >&w
-        exit 1
-        ;;
-        esac
-    in 
-        e) EFI_PART="$OPTARG"
-        ;;
-    \?) echo "Invalid option -$OPTARG" >&w
-    exit 1
-    ;;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            exit 1
+            ;;
+        :)
+            echo "Option -$OPTARG requires an argument." >&2
+            exit 1
+            ;;
     esac
+done
 
 
 # Set locale
