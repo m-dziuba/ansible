@@ -6,12 +6,15 @@ pacman -Sy
 fdisk -l
 read -p "Disk to partition: " TGTDEV
 read -p "Partition suffix: " PART_SUFFIX
+read -p "EFI partition size: " EFI_SIZE
+read -p "root partition size: " ROOT_SIZE
+
 sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
     g # create new partition table
     n # new partition
     1 # partition number 1
       # default - start at beginning of disk 
-    +300M # 300 MB boot parttion
+    +${EFI_SIZE} # EFI_SIZE MB boot parttion
     t # change partition type to EFI
     1 # pick partition 1
     w # save
@@ -20,7 +23,7 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
     n # new partition
     2 # partion number 2
       # default, start immediately after preceding partition
-    +30G # 30 GB root partition
+    +${ROOT_SIZE} # ROOT_SIZE GB root partition
     w # save
 EOF
 sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
@@ -42,4 +45,4 @@ pacstrap -K /mnt base linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 
 # Change root into the new system
-arch-chroot /mnt 
+arch-chroot /mnt  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/m-dziuba/ansible/master/in-chroot.sh)"

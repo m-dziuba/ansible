@@ -27,14 +27,14 @@ mkswap /swapfile
 echo "/swapfile none swap sw 0 0" | tee -a /etc/fstab
 
 # Set username and password
+echo "### Setup for $USER ###"
 read -p "Username: " USER
 useradd -m $USER
 usermod -aG wheel $USER
-echo "### Setup for $USER ###"
 passwd $USER
 
 # Set root password
-echo "### Setup for $USER ###"
+echo "### Setup for root ###"
 passwd
 
 # Set hostname
