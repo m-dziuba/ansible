@@ -3,3 +3,5 @@
   tags:
     - install
     - rice
+- name: Reset awesome
+  shell: echo 'awesome.restart()' | awesome-client
