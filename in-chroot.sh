@@ -52,7 +52,5 @@ chown -R "${USER}:${USER}" "/home/${USER}"
 chmod 700 "home/${USER}"
 chmod 777  "/home/${USER}/projects/ansible/install.sh"
 
-su mdziuba
-cd ~/projects/ansible
-./install.sh
+su -c "/home/${USER}/projects/ansible/install.sh" mdziuba 
 
