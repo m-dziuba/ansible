@@ -18,6 +18,15 @@
   - name: Install oh-my-zsh
     become_user: "{{ lookup('env', 'USER') }}"
     shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended 
-  - name: Install the zsh plugin for autosuggestions
-    community.general.pacman:
-      name: zsh-autosuggestions
+  - name: Install the zsh-autosuggestions
+    ansible.builtin.git:
+      repo:  https://github.com/zsh-users/zsh-autosuggestions.git
+      dest: "{{ lookup('env', 'ZSH_CUSTOM') }}/plugins/zsh-autosuggestions"
+  - name: Install zsh-syntax-highlighting
+    ansible.builtin.git:
+      repo:  https://github.com/zsh-users/zsh-syntax-highlighting.git
+      dest: "{{ lookup('env', 'ZSH_CUSTOM') }}/plugins/zsh-syntax-highlighting"
+  - name: Install zsh powerlevel10k theme
+    ansible.builtin.git:
+      repo:  https://github.com/romkatv/powerlevel10k.git
+      dest: "{{ lookup('env', 'ZSH_CUSTOM') }}//themes/powerlevel10k"
