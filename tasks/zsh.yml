@@ -4,6 +4,7 @@
   - dotfiles
   - zsh
   - productivity
+  become_user: "{{ lookup('env', 'USER') }}"
   block:
   - name: Install zsh
     community.general.pacman:
@@ -16,7 +17,6 @@
   - name: Set enviroment vars for oh-my-zsh installation
     shell: RUNZSH=yes
   - name: Install oh-my-zsh
-    become_user: "{{ lookup('env', 'USER') }}"
     shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended 
   - name: Install the zsh-autosuggestions
     ansible.builtin.git:
