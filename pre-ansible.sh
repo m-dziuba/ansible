@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 echo "Press ctrl+c to continue"
 trap "pkill -f 'sleep 1h'" INT
 trap "set +x ; sleep 1h ; set -x" DEBUG
