@@ -19,7 +19,9 @@
   - name: Set enviroment vars for oh-my-zsh installation
     shell: RUNZSH=yes
   - name: Install oh-my-zsh
-    shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended 
+    shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended 
+  - name: Set ZSH_CUSTOM
+    shell: "ZSH_CUSTOM={{ lookup('env', 'HOME') }}/.oh-my-zsh/custom"
   - name: Install the zsh-autosuggestions
     ansible.builtin.git:
       repo:  https://github.com/zsh-users/zsh-autosuggestions.git
