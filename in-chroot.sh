@@ -20,7 +20,8 @@ while getopts ":e:p:u:" opt; do
             ;;
     esac
 done
-
+sleep 15
+echo $EFI_PART, $PASSWORD, $USER
 
 # Set locale
 ln -sf /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
