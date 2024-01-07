@@ -1,3 +1,36 @@
+- name: Setup xorg
+  tags:
+    - install
+    - core
+  block:
+    - name: Install xorg packages
+      community.general.pacman:
+        name:
+          - xorg
+          - xorg-xinit
+    - name: Setup .xinitrc
+      ansible.builtin.copy:
+        src: /etc/X11/xinit/xinitrc 
+        dest: "{{ lookup('env', 'HOME') }}/.xinitrc"
+    - name: Update file content in Ansible
+      lineinfile:
+        path: "{{ lookup('env', 'HOME') }}/.xinitrc"
+        line: 'exec awesome'
+        insertbefore: EOF
+        state: present
+      args:
+        before: "{{ lookup('file', '{{ lookup('env', 'HOME') }}/.xinitrc') | split('\n')[:-4] | join('\n') }}"
+    - name: Check GPU vendor and install driver
+      block:
+        - name: Install NVIDIA driver
+          community.general.pacman:
+            name: nvidia
+          when: "'NVIDIA Corporation' in ansible_devices['GPU']['subsystem_vendor']"
+        - name: Install NVIDIA driver
+          community.general.pacman:
+            name: amdgpu
+          when: "'Advanced Micro Devices, Inc.' in ansible_devices['GPU']['subsystem_vendor']"
+
 - name: Setup core packages
   community.general.pacman:
     name: ["curl", "htop", "go", "ccache", "lsof", "python-pip", "python", "pavucontrol", "nvidia", "nvidia-settings", "docker"]
@@ -19,4 +52,5 @@
     - name: Install clang
       community.general.pacman:
         name: ["clang"]
+
 

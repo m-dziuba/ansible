@@ -52,24 +52,6 @@ chown -R "${USER}:${USER}" "/home/${USER}"
 chmod 700 "home/${USER}"
 chmod 777  "/home/${USER}/projects/ansible/install.sh"
 
-if [ "$GPU_VENDOR" == "NVIDIA" ]; then
-    echo "NVIDIA GPU detected. Installing NVIDIA package..."
-    pacman -S nvidia --noconfirm
-elif [ "$GPU_VENDOR" == "AMD" ]; then
-    echo "AMD GPU detected. Installing AMD package..."
-    pacman -S xf-86-video-amdgpu --noconfirm
-else
-    echo "Unknown GPU manufacturer. No package installed."
-fi
-
-sudo pacman -S xorg xorg-xinit --noconfirm
-cp /etc/X11/xinit/xinitrc /home/${USER}/.xinitrc
-{
-    head -n -4 /home/${USER}/.xinitrc
-    echo "kitty &"
-    echo "exec awesome"
-} > /home/${USER}/.xinitrc
-
 su mdziuba
 cd ~/projects/ansible
 ./install.sh
