@@ -22,16 +22,16 @@
   - name: Install oh-my-zsh
     shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended 
   - name: Set ZSH_CUSTOM
-    shell: "ZSH_CUSTOM={{ lookup('env', 'HOME') }}/.oh-my-zsh/custom"
+    shell: "ZSH_CUSTOM="
   - name: Install the zsh-autosuggestions
     ansible.builtin.git:
       repo:  https://github.com/zsh-users/zsh-autosuggestions.git
-      dest: "{{ lookup('env', 'ZSH_CUSTOM') }}/plugins/zsh-autosuggestions"
+      dest: "{{ lookup('env', 'HOME') }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
   - name: Install zsh-syntax-highlighting
     ansible.builtin.git:
       repo:  https://github.com/zsh-users/zsh-syntax-highlighting.git
-      dest: "{{ lookup('env', 'ZSH_CUSTOM') }}/plugins/zsh-syntax-highlighting"
+      dest: "{{ lookup('env', 'HOME') }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
   - name: Install zsh powerlevel10k theme
     ansible.builtin.git:
       repo:  https://github.com/romkatv/powerlevel10k.git
-      dest: "{{ lookup('env', 'ZSH_CUSTOM') }}/themes/powerlevel10k"
+      dest: "{{ lookup('env', 'HOME') }}/.oh-my-zsh/custom/themes/powerlevel10k"
