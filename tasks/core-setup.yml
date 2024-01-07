@@ -1,4 +1,5 @@
 - name: Setup xorg
+  become_user: "{{ lookup('env', 'USER') }}"
   tags:
     - install
     - core
