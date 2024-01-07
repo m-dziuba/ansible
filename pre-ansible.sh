@@ -49,7 +49,6 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 # Change root into the new system
 arch-chroot /mnt  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/m-dziuba/ansible/master/in-chroot.sh)" -e ${TGTDEV}${PART_SUFFIX}1 -u ${USER} -p ${PASSWORD}
-arch-chroot /mnt
-exit
+
 umount -a
 reboot now
