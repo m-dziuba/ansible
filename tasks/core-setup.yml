@@ -12,14 +12,17 @@
       ansible.builtin.copy:
         src: /etc/X11/xinit/xinitrc 
         dest: "{{ lookup('env', 'HOME') }}/.xinitrc"
-    - name: Update file content in Ansible
+    - name: Register .xinitrc content
+      shell:  "cat {{ lookup('env', 'HOME') }}/.xinitrc"
+      register: xinitrc_content
+    - name: Remove default term and WM
+      blockinfile:
+        path: ~/.xinitrc
+        block: "{{ xinitrc_content.stdout_lines[:-5] | join('\n') }}"
+    - name: Append 'exec awesome'
       lineinfile:
         path: "{{ lookup('env', 'HOME') }}/.xinitrc"
         line: 'exec awesome'
-        insertbefore: EOF
-        state: present
-      args:
-        before: "{{ lookup('file', lookup('env', 'HOME') + '/.xinitrc') | split('\n')[:-4] | join('\n') }}"
     - name: Check GPU vendor and install driver
       block:
         - name: Install NVIDIA driver
