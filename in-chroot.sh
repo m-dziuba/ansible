@@ -11,9 +11,8 @@ while getopts "e:p:u" opt; do
         :) echo "Option -$OPTARG requires an argument." >&2 exit 1 ;;
     esac
 done
-sleep 15
 echo $EFI_PART, $PASSWORD, $USER
-
+read -p "??? " A
 # Set locale
 ln -sf /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
 hwclock --systohc
