@@ -2,25 +2,13 @@
 trap read debug
 
 # get opts
-while getopts ":e:p:u:" opt; do
+while getopts "e:p:u" opt; do
     case $opt in
-        e)
-            EFI_PART="$OPTARG"
-            ;;
-        p)
-            PASSWORD="$OPTARG"
-            ;;
-        u)
-            USER="$OPTARG"
-            ;;
-        \?)
-            echo "Invalid option: -$OPTARG" >&2
-            exit 1
-            ;;
-        :)
-            echo "Option -$OPTARG requires an argument." >&2
-            exit 1
-            ;;
+        e) EFI_PART="$OPTARG" ;;
+        p) PASSWORD="$OPTARG" ;;
+        u) USER="$OPTARG" ;;
+        \?) echo "Invalid option: -$OPTARG" >&2 exit 1 ;; 
+        :) echo "Option -$OPTARG requires an argument." >&2 exit 1 ;;
     esac
 done
 sleep 15
