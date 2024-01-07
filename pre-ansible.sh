@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-trap read debug
-
 loadkeys pl
 timedatectl set-ntp true
 pacman -Sy
