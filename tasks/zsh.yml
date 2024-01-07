@@ -29,4 +29,4 @@
   - name: Install zsh powerlevel10k theme
     ansible.builtin.git:
       repo:  https://github.com/romkatv/powerlevel10k.git
-      dest: "{{ lookup('env', 'ZSH_CUSTOM') }}//themes/powerlevel10k"
+      dest: "{{ lookup('env', 'ZSH_CUSTOM') }}/themes/powerlevel10k"

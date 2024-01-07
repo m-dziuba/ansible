@@ -33,22 +33,23 @@ echo "/swapfile none swap sw 0 0" | tee -a /etc/fstab
 # Set username and password
 useradd -m -s /bin/bash $USER
 chown -R "${USER}:${USER}" "/home/${USER}"
-chmod 700 "home/{$USER}"
+chmod 700 "home/${USER}"
 usermod -aG wheel $USER
 
 echo "${USER}:${PASSWORD}" | chpasswd
 echo "root:${PASSWORD}" | chpasswd
 
 # Set hostname
-rm /etc/hostname
+rm -f /etc/hostname
 touch /etc/hostname
 echo "$USER-arch" | tee -a /etc/hostname
 echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
 
 pacman -S sudo git networkmanager --noconfirm
-systemctl enable NetworkManager.service --now
+systemctl enable NetworkManager.service
 git clone https://github.com/m-dziuba/ansible /home/${USER}/ansible
 chown -R "${USER}:${USER}" "/home/${USER}/ansible"
+chmod 777  "/home/${USER}/ansible/install.sh"
 
 if lspci | grep -i -q "VGA\|3D controller"; then
     echo "GPU detected."
@@ -69,10 +70,15 @@ else
     echo "No GPU detected."
 fi
 
-pacman -S xorg xorg-xinit
+sudo pacman -S xorg xorg-xinit --noconfirm
 cp /etc/X11/xinit/xinitrc /home/${USER}/.xinitrc
 {
     head -n -4 /home/${USER}/.xinitrc
     echo "kitty &"
     echo "exec awesome"
 } > /home/${USER}/.xinitrc
+
+su mdziuba
+cd ~/ansible
+./install.sh
+
