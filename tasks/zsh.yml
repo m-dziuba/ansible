@@ -13,6 +13,7 @@
     community.general.pacman:
       name: python-pexpect
   - name: Set zsh as deafult terminal
+    become_user: root
     shell: chsh -s $(which zsh)
   - name: Set enviroment vars for oh-my-zsh installation
     shell: CHSH=yes
