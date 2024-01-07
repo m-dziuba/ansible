@@ -49,7 +49,7 @@ pacstrap -K /mnt base linux linux-firmware --noconfirm
 genfstab -U /mnt >> /mnt/etc/fstab
 
 # Change root into the new system
-arch-chroot /mnt  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/m-dziuba/ansible/master/in-chroot.sh)"
+arch-chroot /mnt  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/m-dziuba/ansible/master/in-chroot.sh)" -e ${TGTDEV}${PART_SUFFIX}1 -p ${PASSWORD} -u ${USER}
 
 umount -a
 reboot now
