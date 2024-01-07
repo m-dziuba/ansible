@@ -14,7 +14,6 @@
     - name: Project ansible
       ansible.builtin.git:
         repo: git@github.com:m-dziuba/ansible
-        bare: true
         dest: "{{ projects }}/ansible"
       tags:
         - install
@@ -30,7 +29,6 @@
     - name: Project ansible
       ansible.builtin.git:
         repo: git@github.com:m-dziuba/pftui
-        bare: true
         dest: "{{ projects }}/pftui"
       tags:
         - install
