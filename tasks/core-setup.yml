@@ -24,16 +24,16 @@
       lineinfile:
         path: "{{ lookup('env', 'HOME') }}/.xinitrc"
         line: 'exec awesome'
-    - name: Check GPU vendor and install driver
-      block:
-        - name: Install NVIDIA driver
-          community.general.pacman:
-            name: nvidia
-          when: "'NVIDIA Corporation' in ansible_devices['GPU']['subsystem_vendor']"
-        - name: Install NVIDIA driver
-          community.general.pacman:
-            name: amdgpu
-          when: "'Advanced Micro Devices, Inc.' in ansible_devices['GPU']['subsystem_vendor']"
+    #    - name: Check GPU vendor and install driver
+    #      block:
+    #        - name: Install NVIDIA driver
+    #          community.general.pacman:
+    #            name: nvidia
+    #          when: "'NVIDIA Corporation' in ansible_devices['GPU']['subsystem_vendor']"
+    #        - name: Install NVIDIA driver
+    #          community.general.pacman:
+    #            name: amdgpu
+    #          when: "'Advanced Micro Devices, Inc.' in ansible_devices['GPU']['subsystem_vendor']"
 
 - name: Setup core packages
   community.general.pacman:
