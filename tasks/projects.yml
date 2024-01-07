@@ -1,34 +1,40 @@
-- name: Ansible exists
-  stat:
-    path: "{{ personal }}/ansible"
-  register: ansible
+- name: Setup projects
+  become_user: "{{ lookup('env', 'USER') }}"
   tags:
     - install
     - projects
-- name: Project ansible
-  ansible.builtin.git:
-    repo: git@github.com:m-dziuba/ansible
-    bare: true
-    dest: "{{ personal }}/ansible"
-  tags:
-    - install
-    - projects
-  when: ansible.stat.exists == False
-- name: pftui exists
-  stat:
-    path: "{{ personal }}/pftui"
-  register: pftui
-  tags:
-    - install
-    - projects
-- name: Project ansible
-  ansible.builtin.git:
-    repo: git@github.com:m-dziuba/pftui
-    bare: true
-    dest: "{{ personal }}/pftui"
-  tags:
-    - install
-    - projects
-  when: pftui.stat.exists == False
+  block:
+    - name: Ansible exists
+      stat:
+        path: "{{ projects }}/ansible"
+      register: ansible
+      tags:
+        - install
+        - projects
+    - name: Project ansible
+      ansible.builtin.git:
+        repo: git@github.com:m-dziuba/ansible
+        bare: true
+        dest: "{{ projects }}/ansible"
+      tags:
+        - install
+        - projects
+      when: ansible.stat.exists == False
+    - name: pftui exists
+      stat:
+        path: "{{ projects }}/pftui"
+      register: pftui
+      tags:
+        - install
+        - projects
+    - name: Project ansible
+      ansible.builtin.git:
+        repo: git@github.com:m-dziuba/pftui
+        bare: true
+        dest: "{{ projects }}/pftui"
+      tags:
+        - install
+        - projects
+      when: pftui.stat.exists == False
 
 
