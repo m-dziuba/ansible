@@ -13,6 +13,7 @@
     - import_tasks: tasks/core-setup.yml
     - import_tasks: tasks/utils-setup.yml
     - import_tasks: tasks/productivity-tools.yml
+    - import_tasks: tasks/neovim-tasks.yml
     - import_tasks: tasks/kitty-setup.yml
     - import_tasks: tasks/rice-setup.yml
     - import_tasks: tasks/zsh.yml

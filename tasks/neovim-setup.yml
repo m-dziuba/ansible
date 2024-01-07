@@ -1,0 +1,23 @@
+- name: Setup neovim and LSPs
+  tags: 
+    - neovim
+    - install
+    - productivity
+  block:
+    - name: Install Neovim
+      community.general.pacman:
+        name: neovim
+    - name: Install programming language tools
+      community.general.pacman:
+        name: 
+          - cargo
+          - python-pip
+          - npm
+          - luarocks
+    - name: Install LSPs
+      community.general.pacman:
+        name: 
+          - pyright
+          - gopls
+          - ruff
+          - rust-analyzer
