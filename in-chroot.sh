@@ -81,6 +81,6 @@ cp /etc/X11/xinit/xinitrc /home/${USER}/.xinitrc
 } > /home/${USER}/.xinitrc
 
 su mdziuba
-cd ~/ansible
+cd ~/projects/ansible
 ./install.sh
 
