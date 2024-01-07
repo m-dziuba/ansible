@@ -47,8 +47,10 @@ echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
 
 pacman -S sudo git networkmanager --noconfirm
 systemctl enable NetworkManager.service
-git clone https://github.com/m-dziuba/ansible /home/${USER}/ansible
-chown -R "${USER}:${USER}" "/home/${USER}/ansible"
+
+mkdir -p /home/${USER}/projects/ansible
+git clone https://github.com/m-dziuba/ansible /home/${USER}/projects/ansible
+chown -R "${USER}:${USER}" "/home/${USER}"
 chmod 777  "/home/${USER}/ansible/install.sh"
 
 if lspci | grep -i -q "VGA\|3D controller"; then
