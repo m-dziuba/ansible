@@ -1,3 +1,6 @@
+#!/usr/env/bin bash
+trap read debug
+
 # get opts
 while getopts ":e:p:u:" opt; do
     case $opt in
