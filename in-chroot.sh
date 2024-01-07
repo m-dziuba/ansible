@@ -1,27 +1,8 @@
-# get opts
-while getopts ":e:p:u:" opt; do
-    case $opt in
-        e)
-            EFI_PART="$OPTARG"
-            ;;
-        p)
-            PASSWORD="$OPTARG"
-            ;;
-        u)
-            USER="$OPTARG"
-            ;;
-        \?)
-            echo "Invalid option: -$OPTARG" >&2
-            exit 1
-            ;;
-        :)
-            echo "Option -$OPTARG requires an argument." >&2
-            exit 1
-            ;;
-    esac
-done
-sleep 15
-echo $EFI_PART, $PASSWORD, $USER
+fdisk -l
+read -p "EFI partiton: " EFI_PART
+read -p "User: " USER
+read -p "Password: " PASSWORD
+
 
 # Set locale
 ln -sf /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
