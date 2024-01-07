@@ -3,6 +3,9 @@
     - install
     - kitty
   block:
+    - name: Install FiraCode NF
+      community.general.pacman:
+        name: "ttf-firacode-nerd"
     - name: Install kitty
       community.general.pacman:
         name: ["python-pygments", "kitty"]
