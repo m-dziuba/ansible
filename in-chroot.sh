@@ -4,7 +4,7 @@ fdisk -l
 read -p "EFI partition: " EFI_PART 
 read -p "Username: " USER
 read -p "Password: " PASSWORD 
-
+read -p "GPU - amd or nvidia": GPU_VENDOR
 # Set locale
 ln -sf /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
 hwclock --systohc
@@ -32,8 +32,6 @@ echo "/swapfile none swap sw 0 0" | tee -a /etc/fstab
 
 # Set username and password
 useradd -m -s /bin/bash $USER
-chown -R "${USER}:${USER}" "/home/${USER}"
-chmod 700 "home/${USER}"
 usermod -aG wheel $USER
 
 echo "${USER}:${PASSWORD}" | chpasswd
@@ -51,25 +49,17 @@ systemctl enable NetworkManager.service
 mkdir -p /home/${USER}/projects/ansible
 git clone https://github.com/m-dziuba/ansible /home/${USER}/projects/ansible
 chown -R "${USER}:${USER}" "/home/${USER}"
-chmod 777  "/home/${USER}/ansible/install.sh"
+chmod 700 "home/${USER}"
+chmod 777  "/home/${USER}/projects/ansible/install.sh"
 
-if lspci | grep -i -q "VGA\|3D controller"; then
-    echo "GPU detected."
-
-    # Check GPU manufacturer
-    GPU_VENDOR=$(lspci | grep -i -m1 "VGA\|3D controller" | grep -i -o -E "NVIDIA|AMD")
-    
-    if [ "$GPU_VENDOR" == "NVIDIA" ]; then
-        echo "NVIDIA GPU detected. Installing NVIDIA package..."
-        pacman -S nvidia --noconfirm
-    elif [ "$GPU_VENDOR" == "AMD" ]; then
-        echo "AMD GPU detected. Installing AMD package..."
-        pacman -S xf-86-video-amdgpu --noconfirm
-    else
-        echo "Unknown GPU manufacturer. No package installed."
-    fi
+if [ "$GPU_VENDOR" == "NVIDIA" ]; then
+    echo "NVIDIA GPU detected. Installing NVIDIA package..."
+    pacman -S nvidia --noconfirm
+elif [ "$GPU_VENDOR" == "AMD" ]; then
+    echo "AMD GPU detected. Installing AMD package..."
+    pacman -S xf-86-video-amdgpu --noconfirm
 else
-    echo "No GPU detected."
+    echo "Unknown GPU manufacturer. No package installed."
 fi
 
 sudo pacman -S xorg xorg-xinit --noconfirm
