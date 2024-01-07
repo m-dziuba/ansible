@@ -19,7 +19,7 @@
         insertbefore: EOF
         state: present
       args:
-        before: "{{ lookup('file', '{{ lookup('env', 'HOME') }}/.xinitrc') | split('\n')[:-4] | join('\n') }}"
+        before: "{{ lookup('file', {{ lookup('env', 'HOME') }}/.xinitrc) | split('\n')[:-4] | join('\n') }}"
     - name: Check GPU vendor and install driver
       block:
         - name: Install NVIDIA driver
