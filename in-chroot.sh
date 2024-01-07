@@ -2,7 +2,7 @@
 trap read debug
 
 # get opts
-while getopts "e:p:u" opt; do
+while getopts "e:p:u:" opt; do
     case $opt in
         e) EFI_PART="$OPTARG" ;;
         p) PASSWORD="$OPTARG" ;;
