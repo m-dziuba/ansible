@@ -17,10 +17,12 @@
         register: xinitrc_content
       - name: Remove default term and WM
         blockinfile:
-          path: " {{ home_dir }}/.xinitrc"
+          path: "{{ home_dir }}/.xinitrc"
           create: True
           block: |
-            {{ xinitrc_content.stdout_lines[:-5] | join('\n') }}
+            {% for item in xinitrc_content.stdout_lines[:-5] %}
+            {{ item }}
+            {% endfor %}
             ~/.fehbg &
             exec awesome
       - name: Check GPU vendor and install driver
@@ -61,6 +63,7 @@
       - python
       - pavucontrol
       - docker
+      - bat
   tags:
     - install
     - core 
