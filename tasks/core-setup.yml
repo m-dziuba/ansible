@@ -18,34 +18,36 @@
       - name: Remove default term and WM
         blockinfile:
           path: " {{ home_dir }}/.xinitrc"
+          create: True
           block: |
             {{ xinitrc_content.stdout_lines[:-5] | join('\n') }}
             ~/.fehbg &
             exec awesome
-      - name: Append 'exec awesome'
-        lineinfile:
-          path: "{{ lookup('env', 'HOME') }}/.xinitrc"
-          line: 'exec awesome'
       - name: Check GPU vendor and install driver
         tags:
           - gpu
         block:
         - name: Install jq and lshw
+          become_user: root
           community.general.pacman:
             name:
               - jq
               - lshw
         - name: Set gpu vendor
-          shell: lshw -json | jq '.. | select(.id? == "display")| .vendor | grep -oE (nvidia|amd)'
+          become_user: root
+          shell: lshw -json | jq '.. | select(.id? == "display") .vendor ' | grep -oiE '(nvidia|amd)'
           register: gpu_vendor
         - name: Install NVIDIA driver
           community.general.pacman:
             name: nvidia
-          when: "'NVIDIA Corporation' in ansible_devices['GPU']['subsystem_vendor']"
+          when: "'nvidia' in gpu_vendor.stdout_lines | lower"
         - name: Install NVIDIA driver
+          become_user: root
           community.general.pacman:
-            name: amdgpu
-          when: "'amd' in gpu_vendor"
+            name:
+              - mesa
+              - xf86-video-amdgpu
+          when: "'amd' in gpu_vendor.stdout_lines | lower"
 
 - name: Setup core packages
   community.general.pacman:

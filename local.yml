@@ -21,4 +21,3 @@
     - import_tasks: tasks/dotfiles.yml
     - import_tasks: tasks/git-setup.yml
     - import_tasks: tasks/projects.yml
-    - import_tasks: tasks/rice-tasks.yml

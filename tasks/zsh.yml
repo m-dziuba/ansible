@@ -12,8 +12,10 @@
   - name: Install python-pexpect
     community.general.pacman:
       name: python-pexpect
-  - name: Set zsh as deafult terminal
+  - name: Set zsh as deafult terminal for root
     shell: chsh -s $(which zsh)
+  - name: Set zsh as deafult terminal for USER
+    shell: "chsh -s $(which zsh) {{ lookup('env', 'USER') }}"
 - name: Zsh USER tasks
   become_user: "{{ lookup('env', 'USER') }}"
   tags:
@@ -22,8 +24,6 @@
   - zsh
   - productivity
   block:
-  - name: Set zsh as deafult terminal
-    shell: chsh -s $(which zsh)
   - name: Install oh-my-zsh
     shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended
   - name: Set ZSH_CUSTOM
