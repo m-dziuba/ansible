@@ -13,7 +13,7 @@ locale-gen
 
 # Setup GRUB
 pacman -Sy
-pacman -S efibootmgr grub linux-headers linux-lts-headers --noconfirm
+pacman -S efibootmgr grub linux-headers linux-lts-headers --noconfirm --needed
 mkdir -p /boot/EFI
 mount $EFI_PART /boot/EFI
 grub-install --target=x86_64-efi --bootloader-id=GRUB --recheck
@@ -42,7 +42,7 @@ touch /etc/hostname
 echo "$USER-arch" | tee -a /etc/hostname
 echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
 
-pacman -S sudo git networkmanager --noconfirm
+pacman -S sudo git networkmanager --noconfirm --needed 
 systemctl enable NetworkManager.service
 
 mkdir -p /home/${USER}/projects/ansible
