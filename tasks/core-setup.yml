@@ -4,7 +4,8 @@
     - install
     - core
   block:
-    - name: Install xorg packages:wq
+    - name: Install xorg packages
+      become_user: root
       community.general.pacman:
         name:
           - xorg
