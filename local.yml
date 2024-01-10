@@ -4,6 +4,7 @@
     source_key: "./.ssh/id_ed25519"
     dest_key: "{{ lookup('env', 'HOME')}}/.ssh/id_ed25519"
     projects: "{{ lookup('env', 'HOME')}}/projects"
+    home_dir: "{{ lookup('env', 'HOME') }}"
   pre_tasks:
     - name: Update cache
       community.general.pacman:

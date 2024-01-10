@@ -1,10 +1,9 @@
 #!/usr/env/bin bash
-trap read debug
+
 fdisk -l
 read -p "EFI partition: " EFI_PART 
 read -p "Username: " USER
 read -p "Password: " PASSWORD 
-read -p "GPU - amd or nvidia": GPU_VENDOR
 # Set locale
 ln -sf /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
 hwclock --systohc
@@ -52,5 +51,5 @@ chown -R "${USER}:${USER}" "/home/${USER}"
 chmod 700 "home/${USER}"
 chmod 777  "/home/${USER}/projects/ansible/install.sh"
 
-su -c "/home/${USER}/projects/ansible/install.sh" mdziuba 
+su -c "cd /home/${USER}/projects/ansible && ./install.sh" mdziuba 
 

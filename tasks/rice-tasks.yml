@@ -1,5 +1,0 @@
-- name: Setup wallpaper
-  shell: "feh --bg-scale {{ lookup('env', 'HOME') }}/.dotfiles/darksky2.png"
-  tags:
-    - install
-    - rice
