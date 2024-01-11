@@ -24,7 +24,6 @@
             {% for item in xinitrc_content.stdout_lines[:-5] %}
             {{ item }}
             {% endfor %}
-            ~/.fehbg &
             exec awesome
       - name: Check GPU vendor and install driver
         tags:
@@ -40,11 +39,12 @@
           become_user: root
           shell: lshw -json | jq '.. | select(.id? == "display") .vendor ' | grep -oiE '(nvidia|amd)'
           register: gpu_vendor
-        - name: Install NVIDIA driver
+        - name: Install NVIDIA GPU driver
+          become_user: root
           community.general.pacman:
             name: nvidia
           when: "'nvidia' in gpu_vendor.stdout_lines | lower"
-        - name: Install NVIDIA driver
+        - name: Install AMD GPU driver
           become_user: root
           community.general.pacman:
             name:
