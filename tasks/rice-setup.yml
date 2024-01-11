@@ -5,6 +5,29 @@
   block:
     - name: Setup rice software
       community.general.pacman:
-        name: ["awesome", "rofi", "picom", "feh", "nautilus"]
+        name: 
+          - awesome
+          - feh
+          - lightdm
+          - nautilus
+          - picom
+          - rofi
+    - name: Setup nody-greeter
+      become_user: "{{ lookup('env', 'USER') }}"
+      block:
+        - name: Clone nody-greeter
+          ansible.builtin.git:
+            repo: https://github.com/JezerM/nody-greeter.git
+            dest: "{{ aur_dir }}/nody-greeter"
+            recursive: True
+        - name: npm install
+          command: "chdir={{ aur_dir }}/nody-greeter npm install"
+        - name: npm run rebuld
+          command: "chdir={{ aur_dir }}/nody-greeter npm run rebuild"
+        - name: npm run build
+          command: "chdir={{ aur_dir }}/nody-greeter npm run build"
+        - name: sudo node make install
+          become_user: root
+          command: "chdir={{ aur_dir }}/nody-greeter node make install"
 
 

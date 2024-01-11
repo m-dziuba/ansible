@@ -1,0 +1,16 @@
+- name: Setup paru
+  become_user: "{{ lookup('env', 'USER' )}}"
+  tags: 
+    - paru
+  block:
+  - name: paru exists
+    stat:
+      path: "{{ aur_dir }}/paru"
+    register: ansible
+  - name: Clone paru
+    ansible.builtin.git:
+      repo: https://aur.archlinux.org/paru.git
+      dest: "{{ aur_dir }}/paru"
+  - name: Build paru
+    command: "chdir={{ aur_dir }}/paru makepkg -si --noconfirm"
+    

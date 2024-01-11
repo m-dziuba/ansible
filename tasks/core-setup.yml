@@ -55,16 +55,18 @@
 - name: Setup core packages
   community.general.pacman:
     name: 
-      - curl
-      - htop
-      - go
+      - bat
+      - bluez
+      - bluez-utils
       - ccache
+      - docker
+      - curl
+      - go
+      - htop
       - lsof
       - python-pip
       - python
       - pavucontrol
-      - docker
-      - bat
   tags:
     - install
     - core 

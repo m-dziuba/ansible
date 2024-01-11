@@ -3,8 +3,9 @@
   vars:
     source_key: "./.ssh/id_ed25519"
     dest_key: "{{ lookup('env', 'HOME')}}/.ssh/id_ed25519"
-    projects: "{{ lookup('env', 'HOME')}}/projects"
     home_dir: "{{ lookup('env', 'HOME') }}"
+    aur_dir:  "{{ lookup('env', 'HOME') }}/aur"
+    projects_dir: "{{ lookup('env', 'HOME')}}/projects"
   pre_tasks:
     - name: Update cache
       community.general.pacman:
@@ -16,6 +17,7 @@
     - import_tasks: tasks/productivity-tools.yml
     - import_tasks: tasks/neovim-setup.yml
     - import_tasks: tasks/kitty-setup.yml
+    - import_tasks: tasks/aur-setup.yml
     - import_tasks: tasks/rice-setup.yml
     - import_tasks: tasks/zsh.yml
     - import_tasks: tasks/dotfiles.yml

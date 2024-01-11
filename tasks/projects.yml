@@ -6,7 +6,7 @@
   block:
     - name: Ansible exists
       stat:
-        path: "{{ projects }}/ansible"
+        path: "{{ projects_dir }}/ansible"
       register: ansible
       tags:
         - install
@@ -14,14 +14,14 @@
     - name: Project ansible
       ansible.builtin.git:
         repo: git@github.com:m-dziuba/ansible
-        dest: "{{ projects }}/ansible"
+        dest: "{{ projects_dir }}/ansible"
       tags:
         - install
         - projects
       when: ansible.stat.exists == False
     - name: pftui exists
       stat:
-        path: "{{ projects }}/pftui"
+        path: "{{ projects_dir }}/pftui"
       register: pftui
       tags:
         - install
@@ -29,7 +29,7 @@
     - name: Project ansible
       ansible.builtin.git:
         repo: git@github.com:m-dziuba/pftui
-        dest: "{{ projects }}/pftui"
+        dest: "{{ projects_dir }}/pftui"
       tags:
         - install
         - projects
