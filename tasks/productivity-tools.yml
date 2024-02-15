@@ -7,7 +7,9 @@
       - xclip
       - tldr
       - shutter
+      - taskmaster
       - ripgrep
+      - git-delta
   tags:
     - install
     - productivity

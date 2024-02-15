@@ -66,7 +66,10 @@
       - lsof
       - python-pip
       - python
-      - pavucontrol
+      - pipewire-audio
+      - pipewire-pulse
+      - ranger
+      - zoxide
   tags:
     - install
     - core 
